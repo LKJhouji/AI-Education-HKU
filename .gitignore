@@ -1,7 +1,5 @@
 # 依赖文件夹（团队成员拉取后自行 npm install）
 node_modules/
-# 打包产物（部署时生成，不上传）
-build/
 # 本地环境变量（每个人配置不同）
 .env
 .env.local
