@@ -1,21 +1,52 @@
-/* Team 页面专属样式 */
+/* Team 页面专属样式 + 高级动态载入效果 */
+/* 统一 About 页面头部样式 - 核心修改 */
 .team-header {
   text-align: center;
-  padding: var(--spacing-lg) 0;
+  padding: 60px 0 40px; /* 与 About 页面一致 */
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1); /* 苹果风格丝滑缓动，与 About 一致 */
 }
 
+/* 头部载入完成状态 */
+.team-header.loaded {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 标题样式：与 About 页面 h1 完全统一 */
 .team-header h1 {
-  font-size: var(--font-xxl);
-  font-weight: 300;
-  margin-bottom: var(--spacing-sm);
+  font-size: 42px;
+  font-weight: 600;
+  margin: 0 0 16px;
+  letter-spacing: -0.3px;
+  color: #1d1d1f; /* 与 About 页面文字颜色一致 */
 }
 
+/* 副标题样式：与 About 页面 p 完全统一 */
 .team-header p {
-  font-size: var(--font-lg);
-  color: var(--apple-gray-light);
-  margin-bottom: var(--spacing-md);
+  font-size: 18px;
+  color: #86868b; /* 与 About 页面副标题颜色一致 */
+  margin: 0 0 24px;
 }
 
+/* 分割线样式：与 About 页面完全统一 */
+.team-header .divider {
+  width: 60px;
+  height: 2px;
+  background-color: #0071e3; /* 苹果蓝，与 About 页面分割线一致 */
+  margin: 0 auto;
+  border-radius: 1px;
+  opacity: 0;
+  transition: opacity 0.8s ease 0.5s; /* 延迟显示，与 About 页面一致 */
+}
+
+/* 载入后分割线显示，与 About 页面一致 */
+.team-header.loaded .divider {
+  opacity: 1;
+}
+
+/* 保留 Team 页面原有其他样式，无需修改 */
 .team-members {
   margin: var(--spacing-xl) 0;
 }
@@ -29,20 +60,35 @@
 .member-card {
   text-align: center;
   padding: var(--spacing-md);
-  transition: transform 0.2s ease;
+  opacity: 0;
+  transform: translateY(30px) scale(0.98);
+  transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  border-radius: 20px;
+}
+
+.member-card.loaded {
+  opacity: 1;
+  transform: translateY(0) scale(1);
 }
 
 .member-card:hover {
-  transform: translateY(-5px); /* 轻微上浮，苹果风格的柔和交互 */
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
 .member-avatar {
   width: 120px;
   height: 120px;
-  border-radius: 50%; /* 圆形头像，苹果风格 */
+  border-radius: 50%;
   margin-bottom: var(--spacing-md);
   object-fit: cover;
   border: 1px solid var(--apple-border);
+  transition: all 0.4s ease;
+}
+
+.member-card:hover .member-avatar {
+  transform: scale(1.05);
+  border-color: var(--apple-blue);
 }
 
 .member-card h3 {
@@ -53,7 +99,7 @@
 
 .member-role {
   font-size: var(--font-sm);
-  color: var(--apple-blue); /* 用苹果蓝突出职位 */
+  color: var(--apple-blue);
   margin-bottom: var(--spacing-sm);
   font-weight: 400;
 }
@@ -69,6 +115,14 @@
   margin: 0 auto;
   text-align: center;
   padding: var(--spacing-lg) 0;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.team-idea.loaded {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .team-idea h2 {
@@ -81,4 +135,35 @@
   font-size: var(--font-md);
   color: var(--apple-gray-light);
   line-height: 1.8;
+}
+
+/* 响应式适配：补充头部响应式，与 About 页面一致 */
+@media (max-width: 768px) {
+  /* 头部标题响应式，与 About 页面一致 */
+  .team-header h1 {
+    font-size: 32px;
+  }
+  .team-header p {
+    font-size: 16px;
+  }
+
+  .members-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-lg);
+  }
+
+  .member-card {
+    transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .member-card:hover {
+    transform: translateY(-5px) scale(1.01);
+  }
+}
+
+@media (max-width: 500px) {
+  .members-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+  }
 }

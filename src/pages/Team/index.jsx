@@ -1,12 +1,13 @@
+import { useEffect, useState } from 'react';
 import './Team.css';
 
-// 团队成员数据（可后续替换为真实信息）
+// 团队成员数据
 const teamMembers = [
   {
     name: "Henry",
     role: "创始人 / 前端架构师",
     desc: "10年React开发经验，曾任职于一线互联网公司，专注前端性能优化与组件化设计",
-    avatar: "/avatars/Henry.jpg" // 占位图，后续替换为真实头像
+    avatar: "/avatars/Henry.jpg"
   },
   {
     name: "李丽",
@@ -41,21 +42,56 @@ const teamMembers = [
 ];
 
 const Team = () => {
+  // 定义各模块的载入状态
+  const [headerLoaded, setHeaderLoaded] = useState(false);
+  const [cardsLoaded, setCardsLoaded] = useState([]); // 存储每个卡片的载入状态
+  const [ideaLoaded, setIdeaLoaded] = useState(false);
+
+  useEffect(() => {
+    // 1. 页面头部先载入（延迟100ms，模拟自然加载）
+    const headerTimer = setTimeout(() => {
+      setHeaderLoaded(true);
+    }, 100);
+
+    // 2. 团队卡片逐个载入（每个间隔150ms，营造递进效果）
+    const cardTimers = teamMembers.map((_, index) => {
+      return setTimeout(() => {
+        setCardsLoaded(prev => [...prev, index]);
+      }, 500 + index * 150);
+    });
+
+    // 3. 团队理念最后载入（延迟1500ms）
+    const ideaTimer = setTimeout(() => {
+      setIdeaLoaded(true);
+    }, 1500);
+
+    // 清除定时器
+    return () => {
+      clearTimeout(headerTimer);
+      clearTimeout(ideaTimer);
+      cardTimers.forEach(timer => clearTimeout(timer));
+    };
+  }, []);
+
   return (
-    <div className="page-wrapper">
+    <div className="home-bg-container">
       <div className="container">
-        {/* 页面头部 */}
-        <section className="team-header">
+        {/* 页面头部 - 动态载入 */}
+        <section className={`team-header ${headerLoaded ? 'loaded' : ''}`}>
           <h1>我们的团队</h1>
           <p>一群热爱产品、追求极致的专业人</p>
           <div className="divider"></div>
         </section>
 
-        {/* 团队成员列表 */}
+        {/* 团队成员列表 - 卡片逐个载入 */}
         <section className="team-members">
           <div className="members-grid">
             {teamMembers.map((member, index) => (
-              <div className="member-card" key={index}>
+              <div
+                className={`member-card ${cardsLoaded.includes(index) ? 'loaded' : ''}`}
+                key={index}
+                style={{ transitionDelay: `${index * 0.15}s` }} // 逐个延迟
+              >
                 <img src={member.avatar} alt={member.name} className="member-avatar" />
                 <h3>{member.name}</h3>
                 <p className="member-role">{member.role}</p>
@@ -65,8 +101,8 @@ const Team = () => {
           </div>
         </section>
 
-        {/* 团队理念 */}
-        <section className="team-idea">
+        {/* 团队理念 - 动态载入 */}
+        <section className={`team-idea ${ideaLoaded ? 'loaded' : ''}`}>
           <h2>团队理念</h2>
           <p>
             我们相信，优秀的产品来自优秀的团队协作。每个人都发挥自己的专业所长，

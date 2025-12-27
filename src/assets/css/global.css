@@ -1,33 +1,38 @@
 /* 苹果官网风格 - 全局基础样式 */
 :root {
-  /* 苹果官网核心配色 */
-  --apple-white: #ffffff;          /* 主背景 */
-  --apple-black: #1d1d1f;          /* 主文字 */
-  --apple-gray-light: #86868b;     /* 辅助文字 */
-  --apple-gray: #6e6e73;           /* 分隔线/次要元素 */
-  --apple-gray-dark: #3a3a3c;      /* 深色背景 */
-  --apple-blue: #0071e3;           /* 强调色（按钮/链接） */
-  --apple-blue-hover: #0077ed;     /* 按钮hover */
-  --apple-border: #e6e6e6;         /* 轻量边框 */
+  /* 苹果官网核心配色（保留） */
+  --apple-white: #ffffff;
+  --apple-black: #1d1d1f;
+  --apple-gray-light: #86868b;
+  --apple-gray: #6e6e73;
+  --apple-gray-dark: #3a3a3c;
+  --apple-blue: #0071e3;
+  --apple-blue-hover: #0077ed;
+  --apple-border: #e6e6e6;
 
-  /* 间距规范（苹果官网统一间距） */
+  /* 间距规范（核心修改：降低内边距上限） */
   --spacing-xs: 8px;
   --spacing-sm: 16px;
-  --spacing-md: 24px;
+  /* 关键：把内边距上限从24px降到15px，宽屏仅15px内边距 */
+  --spacing-md: clamp(10px, 1vw, 15px);
   --spacing-lg: 32px;
   --spacing-xl: 48px;
   --spacing-xxl: 64px;
 
-  /* 字体大小 */
+  /* 字体大小（保留响应式） */
   --font-xs: 12px;
-  --font-sm: 14px;
-  --font-md: 17px;
-  --font-lg: 24px;
-  --font-xl: 32px;
-  --font-xxl: 48px;
+  --font-sm: clamp(14px, 1.2vw, 16px);
+  --font-md: clamp(16px, 1.5vw, 18px);
+  --font-lg: clamp(20px, 2vw, 24px);
+  --font-xl: clamp(28px, 3vw, 36px);
+  --font-xxl: clamp(32px, 4vw, 56px);
+
+  /* 容器最大宽度（保留95%） */
+  --container-max-width: 80%;
+  --container-max-width-wide: 1800px;
 }
 
-/* 全局重置 + 基础样式 */
+/* 全局重置 + 基础样式（保留） */
 * {
   margin: 0;
   padding: 0;
@@ -40,13 +45,13 @@ body {
   color: var(--apple-black);
   font-size: var(--font-md);
   line-height: 1.5;
-  -webkit-font-smoothing: antialiased; /* 苹果端字体抗锯齿 */
+  -webkit-font-smoothing: antialiased;
 }
 
-/* 文字层级（贴合苹果官网排版） */
+/* 文字层级（保留） */
 h1 {
   font-size: var(--font-xxl);
-  font-weight: 300; /* 苹果标题用轻字重 */
+  font-weight: 400;
   line-height: 1.2;
   color: var(--apple-black);
   margin-bottom: var(--spacing-md);
@@ -54,7 +59,7 @@ h1 {
 
 h2 {
   font-size: var(--font-xl);
-  font-weight: 300;
+  font-weight: 400;
   line-height: 1.25;
   color: var(--apple-black);
   margin-bottom: var(--spacing-sm);
@@ -62,7 +67,7 @@ h2 {
 
 h3 {
   font-size: var(--font-lg);
-  font-weight: 400;
+  font-weight: 500;
   color: var(--apple-black);
   margin-bottom: var(--spacing-xs);
 }
@@ -74,7 +79,7 @@ p {
   margin-bottom: var(--spacing-sm);
 }
 
-/* 链接样式（苹果风格） */
+/* 链接样式（保留） */
 a {
   color: var(--apple-blue);
   text-decoration: none;
@@ -86,13 +91,13 @@ a:hover {
   text-decoration: underline;
 }
 
-/* 按钮样式（苹果官网按钮） */
+/* 按钮样式（保留） */
 .btn-apple {
   display: inline-block;
-  padding: 8px 16px;
+  padding: clamp(8px, 1vw, 12px) clamp(16px, 2vw, 24px);
   background-color: var(--apple-blue);
   color: var(--apple-white);
-  border-radius: 9999px; /* 全圆角，苹果风格 */
+  border-radius: 9999px;
   font-size: var(--font-sm);
   font-weight: 400;
   border: none;
@@ -105,22 +110,44 @@ a:hover {
   text-decoration: none;
 }
 
-/* 容器（居中+最大宽度，贴合苹果官网布局） */
+/* 容器（核心优化：减少内边距+精准控制） */
 .container {
-  max-width: 1280px;
+  max-width: var(--container-max-width) !important; /* 95%宽度 */
   margin: 0 auto;
-  padding: 0 var(--spacing-md);
+  /* 用固定内边距替代响应式，宽屏仅15px，小屏10px */
+  padding: 0 15px;
   width: 100%;
+  /* 强制确保padding不会撑大容器 */
+  box-sizing: border-box !important;
 }
 
-/* 通用分隔线 */
+/* 超宽屏兜底（保留） */
+@media (min-width: 1800px) {
+  .container {
+    max-width: var(--container-max-width-wide); /* 1800px */
+    padding: 0 20px; /* 超宽屏适当增加内边距，避免模块过宽 */
+  }
+}
+
+/* 极小屏适配（保留） */
+@media (max-width: 400px) {
+  .container {
+    max-width: 98%;
+    padding: 0 10px; /* 极小屏仅10px内边距 */
+  }
+}
+
+/* 通用分隔线（保留） */
 .divider {
   height: 1px;
   background-color: var(--apple-border);
   margin: var(--spacing-lg) 0;
 }
 
-/* 页面通用外层容器 */
+/* 页面通用外层容器（保留） */
 .page-wrapper {
-  padding: var(--spacing-xl) 0;
+  width: 100%;
+  min-height: 100vh;
+  padding: 0;
+  margin: 0;
 }

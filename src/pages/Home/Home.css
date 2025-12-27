@@ -1,38 +1,110 @@
-/* src/pages/Home/Home.css */
+/* Home 页面仅保留动画和模块布局样式（无需覆盖全局） */
+.home-bg-container {
+  width: 100%;
+  min-height: 100vh;
+  /* 增强彩色浓度的渐变（仍低饱和，不刺眼） */
+  background:
+    linear-gradient(135deg,
+      rgba(245, 247, 251, 1) 0%,
+      rgba(238, 242, 250, 1) 40%,
+      rgba(230, 237, 248, 1) 70%,
+      rgba(222, 232, 246, 1) 100%),
+    radial-gradient(
+      circle at 20% 80%,
+      rgba(230, 240, 255, 0.9) 0%,
+      rgba(215, 230, 255, 0.5) 50%,
+      rgba(200, 225, 255, 0) 80%);
+  background-attachment: fixed;
+  background-blend-mode: soft-light;
+  display: block;
+  position: relative;
+}
+
+/* 可选：如果想让page-wrapper的背景透明，只显示渐变（不影响其他组件） */
+.home-bg-container .page-wrapper {
+  background-color: transparent !important;
+  min-height: 100vh;
+}
 .home-hero {
   text-align: center;
-  padding: var(--spacing-xxl) 0;
+  padding: 120px 20px 80px;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.home-hero h1 {
-  font-size: var(--font-xxl);
-  margin-bottom: var(--spacing-md);
+.home-hero-loaded {
+  opacity: 1;
+  transform: translateY(0);
 }
 
-.home-hero p {
-  font-size: var(--font-lg);
-  color: var(--apple-gray-light);
-  margin-bottom: var(--spacing-lg);
+.home-features {
+  padding: 40px 20px 120px;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.2s;
+}
+.home-features h2 {
+    text-align: center;
+}
+
+.home-features-loaded {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .features-list {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: var(--spacing-lg);
-  margin-top: var(--spacing-xl);
+  gap: clamp(20px, 2vw, 40px);
+  width: 100%;
+}
+
+/* 自适应断点：小屏换行 */
+@media (max-width: 768px) {
+  .features-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 500px) {
+  .features-list {
+    grid-template-columns: 1fr;
+  }
 }
 
 .feature-item {
-  padding: var(--spacing-md);
   text-align: center;
+  padding: clamp(30px, 3vw, 50px) clamp(15px, 2vw, 25px);
+  background-color: #fff;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  opacity: 0;
+  transform: translateY(20px) scale(0.98);
+  transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 220px;
 }
 
-.feature-item h3 {
-  font-size: var(--font-lg);
-  margin-bottom: var(--spacing-sm);
+.feature-item-loaded {
+  opacity: 1;
+  transform: translateY(0) scale(1);
 }
 
-.feature-item p {
-  color: var(--apple-gray-light);
-  font-size: var(--font-sm);
+/* 极小屏适配 */
+@media (max-width: 400px) {
+  .home-hero {
+    padding: 80px 10px 60px;
+  }
+  .home-features {
+    padding: 20px 10px 80px;
+  }
+  .feature-item {
+    min-height: 200px;
+  }
+  .features-list {
+    gap: 20px;
+  }
 }

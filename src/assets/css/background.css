@@ -1,0 +1,20 @@
+.home-bg-container {
+  width: 100%;
+  min-height: 100vh;
+  /* 增强彩色浓度的渐变（仍低饱和，不刺眼） */
+  background:
+    linear-gradient(135deg,
+      rgba(245, 247, 251, 1) 0%,
+      rgba(238, 242, 250, 1) 40%,
+      rgba(230, 237, 248, 1) 70%,
+      rgba(222, 232, 246, 1) 100%),
+    radial-gradient(
+      circle at 20% 80%,
+      rgba(230, 240, 255, 0.9) 0%,
+      rgba(215, 230, 255, 0.5) 50%,
+      rgba(200, 225, 255, 0) 80%);
+  background-attachment: fixed;
+  background-blend-mode: soft-light;
+  display: block;
+  position: relative;
+}
